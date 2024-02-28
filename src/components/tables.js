@@ -1,14 +1,15 @@
 // screens/HomeScreen.js
 import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {StyleSheet, View, Image, Text, Button, TouchableOpacity, Alert, FlatList } from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity, Alert, FlatList } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faAngleLeft,faChair } from '@fortawesome/free-solid-svg-icons';
+import { faChair } from '@fortawesome/free-solid-svg-icons';
 import LinearGradient from 'react-native-linear-gradient';
 import { setTableInputs } from '../actions/cartaction';
 import globalstyles from '../globalcss/globalstyle';
 import {getTablesAPI} from '../actions/fnbactions';
 import { appOrangeColor, appblueColor } from '../utils/ColorConstants';
+import HeaderComponent from '../utils/headercomponent';
 
 const TablesScreen = ({ navigation }) => {
   const tableState = useSelector((state) => state.cartinfo);
@@ -19,11 +20,8 @@ const TablesScreen = ({ navigation }) => {
   const colorsValue = ['#fbfeff', '#e1f8ff', '#c8f3ff']
   const colorsValueSelected = ["#ffe0b3","#ffc266","#ffa31a"]
   const [selectedTables, setSelectedTables] = useState([])
-  const [choosenTables,setChoosenTables] = useState([])
   const [selectChair, setSelectedChair] = useState([])
   const fnbinfo = useSelector((state) => state.fnbinfo);
-  const [userData,setUserData] = useState({})
-  const userLoginInfo = useSelector((state) => state.userlogin);
   const [tablesList,setTablesList] = useState([])
 
   useEffect(()=>{
@@ -36,15 +34,6 @@ const TablesScreen = ({ navigation }) => {
       }
     }
   },[tableState])
-
-  useEffect(()=>{
-    if(userLoginInfo && userLoginInfo.loginResponse){
-        const {loginResponse} = userLoginInfo
-        const {success_value} = loginResponse
-        const {user_data} = success_value
-        setUserData(user_data)
-    }
-  },[userLoginInfo])
 
   useEffect(()=>{
     if(shouldCallAPI){
@@ -98,13 +87,11 @@ const TablesScreen = ({ navigation }) => {
 
   onSelectTable = (row,index) => {
     let newTableList = []
-    console.log("row",row)
     const topArr = row.seats.top.map(obj => obj.id);
     const leftArr = row.seats.left.map(obj => obj.id);
     const rightArr = row.seats.right.map(obj => obj.id);
     const bottomArr = row.seats.bottom.map(obj => obj.id);
     const arrCollective = [...topArr,...leftArr,...rightArr,...bottomArr]
-    console.log(arrCollective)
     if(isMergeTable){
       setSelectedChair([...selectChair,...arrCollective])
     }else{
@@ -122,7 +109,6 @@ const TablesScreen = ({ navigation }) => {
     setTablesList(newTableList)
   }
   onSelectChair = (chairData) => {
-    console.log(chairData.id)
     if(selectChair.includes(chairData.id)){
       const filtData = selectChair.filter(elem=>elem != chairData.id)
       setSelectedChair([...filtData])
@@ -220,13 +206,7 @@ const TablesScreen = ({ navigation }) => {
   }
   return (
     <View style={globalstyles.containerView}>
-      <View style={styles.headerView}>
-        <TouchableOpacity onPress={goBack}>
-          <FontAwesomeIcon icon={faAngleLeft} size={30}/>
-        </TouchableOpacity>
-        <Image source={require('../../assets/logo_blue.jpg')} style={styles.headerIcon} resizeMode='contain'/>
-        <Text style={styles.headerText}>Tasty Foods Resturant</Text>
-      </View>
+      <HeaderComponent backAction={goBack} />
       <View style={styles.contentView}>
         <View style={styles.topButtonsView}>
           <TouchableOpacity onPress={onMergeTable} style={isMergeTable ? styles.topButtonSelected : styles.topButton}>
@@ -248,31 +228,11 @@ const TablesScreen = ({ navigation }) => {
           />
         </View>
       </View>
-      <View style={styles.bottomContainer} >
-        <Text style={styles.headerText}>User: {userData && userData.name}</Text>
-      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  headerView:{
-    flex:0.10,
-    flexDirection:'row',
-    alignItems:'flex-start',
-    paddingTop:10,
-    width:'100%',
-  },
-  headerIcon:{
-    height:40,
-    width:80,
-  },
-  headerText:{
-    fontSize:17,
-    padding:10,
-    fontWeight:'600',
-    color:'#2B3590'
-  },
   contentView:{
     flex:0.90,
     width:'100%',
@@ -298,13 +258,6 @@ const styles = StyleSheet.create({
     padding:10,
     justifyContent:'center',
     alignItems:'center'
-  },
-  bottomContainer:{
-    position:'absolute',
-    flexDirection:'row',
-    height:60,
-    width:'100%',
-    bottom: 0
   },
   topButtonsView:{
     marginTop:-20,

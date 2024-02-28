@@ -7,6 +7,7 @@ import { faAngleLeft, faGlassWater, faCartShopping, faCheckCircle } from '@forta
 import LinearGradient from 'react-native-linear-gradient';
 import { setCartValue } from '../actions/cartaction';
 import globalstyles from '../globalcss/globalstyle';
+import HeaderComponent from '../utils/headercomponent';
 
 const FoodListScreen = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -42,13 +43,7 @@ const FoodListScreen = ({ navigation }) => {
 
     return (
         <View style={globalstyles.containerView}>
-        <View style={styles.headerView}>
-            <TouchableOpacity onPress={goBack}>
-                <FontAwesomeIcon icon={faAngleLeft} size={30}/>
-            </TouchableOpacity>
-            <Image source={require('../../assets/logo_blue.jpg')} style={styles.headerIcon} resizeMode='contain'/>
-            <Text style={styles.headerText}>Tasty Foods Resturant</Text>
-        </View>
+        <HeaderComponent backAction={goBack} />
         <View style={styles.contentView}>
             <View style={{...styles.categoryViewRow,marginTop:-20}}>
                 <Text style={styles.subheaderText}>Coffee</Text>
@@ -79,31 +74,11 @@ const FoodListScreen = ({ navigation }) => {
             ))}
             
         </View>
-        <View style={styles.bottomContainer} >
-            <Text style={styles.headerText}>User: ABCD</Text>
-        </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-  headerView:{
-    flex:0.10,
-    flexDirection:'row',
-    alignItems:'flex-start',
-    paddingTop:10,
-    width:'100%',
-  },
-  headerIcon:{
-    height:40,
-    width:80,
-  },
-  headerText:{
-    fontSize:17,
-    padding:10,
-    fontWeight:'600',
-    color:'#2B3590'
-  },
   contentView:{
     flex:0.90,
     width:'100%',
@@ -174,13 +149,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#f7f8f8',
     borderColor:'#e0e1e1',
     textAlign:'center'
-  },
-  bottomContainer:{
-    position:'absolute',
-    height:60,
-    width:'100%',
-    bottom: 0,
-  },
+  }
 })
 
 export default FoodListScreen;

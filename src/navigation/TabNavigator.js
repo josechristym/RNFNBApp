@@ -11,24 +11,24 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
-    <Tab.Navigator screenOptions={{tabBarStyle: {height: 70}}}>
+    <Tab.Navigator screenOptions={{tabBarStyle: {height: 50}}}>
         <Tab.Screen name="Dine In" 
         component={DineinNavigation} 
-        options={{ headerShown: false,tabBarLabel: 'Dine In', tabBarLabelStyle:{fontSize:14},
+        options={{ headerShown: false,tabBarLabel: 'Dine In', tabBarLabelStyle:{fontSize:13},
           tabBarIcon: ({ color, size }) => (
-            <FontAwesomeIcon icon={faUtensils } size={30} color={color}/>
+            <FontAwesomeIcon icon={faUtensils } size={20} color={color}/>
           ), }} />
         <Tab.Screen name="Take Away" 
         component={TakeAwayScreen} 
-        options={{ headerShown: false,tabBarLabel: 'Take Away', tabBarLabelStyle:{fontSize:14},
+        options={{ headerShown: false,tabBarLabel: 'Take Away', tabBarLabelStyle:{fontSize:13},
           tabBarIcon: ({ color, size }) => (
-            <FontAwesomeIcon icon={faTruck } size={30} color={color}/>
+            <FontAwesomeIcon icon={faTruck } size={20} color={color}/>
           ), }} />
         <Tab.Screen name="Delivery" 
         component={DeliveryScreen} 
-        options={{ headerShown: false,tabBarLabel: 'Delivery', tabBarLabelStyle:{fontSize:14},
+        options={{ headerShown: false,tabBarLabel: 'Delivery', tabBarLabelStyle:{fontSize:13},
           tabBarIcon: ({ color, size }) => (
-            <FontAwesomeIcon icon={faPersonBiking } size={30} color={color}/>
+            <FontAwesomeIcon icon={faPersonBiking } size={20} color={color}/>
           ), }} />
     </Tab.Navigator>
   );

@@ -1,31 +1,52 @@
 // screens/HomeScreen.js
-import React from 'react';
-import {StyleSheet, View, Image, Text, TextInput, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {StyleSheet, FlatList, View, Image, Text, TextInput, TouchableOpacity } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faAngleLeft, faSearch } from '@fortawesome/free-solid-svg-icons';
 import LinearGradient from 'react-native-linear-gradient';
 import globalstyles from '../globalcss/globalstyle';
+import { getAllGroups } from '../actions/fnbactions';
+import HeaderComponent from '../utils/headercomponent';
+
 const FoodCategoryScreen = ({ navigation }) => {
+  const dispatch = useDispatch()
+  const colorsValue = ['#fbfeff', '#e1f8ff', '#c8f3ff']
+  const fnbinfo = useSelector((state) => state.fnbinfo);
+  const [groups,setGroups] = useState([])
+  gotToList=(group)=>{
+    navigation.navigate("FoodList",{
+      "groupId":group.under_group
+    })
+  }
 
   goBack=()=>{
     navigation.goBack()
   }
 
-  const colorsValue = ['#fbfeff', '#e1f8ff', '#c8f3ff']
+  useEffect(()=>{
+    dispatch(getAllGroups())
+  },[])
+  useEffect(()=>{
+    if(fnbinfo && fnbinfo.groupsInfo){
+      const {groupsInfo} = fnbinfo
+        const {success_value} = groupsInfo
+        setGroups(success_value)
+    }
+  },[fnbinfo])
 
-  gotToList=()=>{
-    navigation.navigate("FoodList")
+  renderItem=({item})=>{
+    return <LinearGradient
+    colors={colorsValue}
+    style={styles.buttonView}>
+        <TouchableOpacity style={styles.touchableView} onPress={()=>gotToList(item)}>
+            <Text style={styles.buttonText}>{item.name}</Text>
+        </TouchableOpacity>
+    </LinearGradient>
   }
-
   return (
     <View style={globalstyles.containerView}>
-      <View style={styles.headerView}>
-        <TouchableOpacity onPress={goBack}>
-          <FontAwesomeIcon icon={faAngleLeft} size={30}/>
-        </TouchableOpacity>
-        <Image source={require('../../assets/logo_blue.jpg')} style={styles.headerIcon} resizeMode='contain'/>
-        <Text style={styles.headerText}>Tasty Foods Resturant</Text>
-      </View>
+      <HeaderComponent backAction={goBack}/>
       <View style={styles.contentView}>
         <View style={styles.inputView}>
             <TextInput
@@ -34,64 +55,20 @@ const FoodCategoryScreen = ({ navigation }) => {
                 />
             <FontAwesomeIcon icon={faSearch} size={20}/>
         </View>
-        <View style={styles.categoryViewRow}>
-            <LinearGradient
-            colors={colorsValue}
-            style={styles.buttonView}>
-                <TouchableOpacity style={styles.touchableView} onPress={gotToList}>
-                    <Text style={styles.buttonText}>Juices</Text>
-                </TouchableOpacity>
-            </LinearGradient>
-            <LinearGradient
-            colors={colorsValue}
-            style={styles.buttonView}>
-                <TouchableOpacity style={styles.touchableView} onPress={gotToList}>
-                    <Text style={styles.buttonText}>Coffee</Text>
-                </TouchableOpacity>
-            </LinearGradient>
-        </View>
-        <View style={styles.categoryViewRow}>
-            <LinearGradient
-            colors={colorsValue}
-            style={styles.buttonView}>
-                <TouchableOpacity style={styles.touchableView} onPress={gotToList}>
-                    <Text style={styles.buttonText}>Tea</Text>
-                </TouchableOpacity>
-            </LinearGradient>
-            <LinearGradient
-            colors={colorsValue}
-            style={styles.buttonView}>
-                <TouchableOpacity style={styles.touchableView} onPress={gotToList}>
-                    <Text style={styles.buttonText}>Veggies</Text>
-                </TouchableOpacity>
-            </LinearGradient>
-        </View>
-      </View>
-      <View style={styles.bottomContainer} >
-        <Text style={styles.headerText}>User: ABCD</Text>
+        <FlatList
+          data={groups}
+          numColumns={2}
+          renderItem={renderItem}
+          keyExtractor={item => item.id}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  headerView:{
-    flex:0.10,
-    flexDirection:'row',
-    alignItems:'flex-start',
-    paddingTop:10,
-    width:'100%',
-  },
-  headerIcon:{
-    height:40,
-    width:80,
-  },
-  headerText:{
-    fontSize:17,
-    padding:10,
-    fontWeight:'600',
-    color:'#2B3590'
-  },
   contentView:{
     flex:0.90,
     width:'100%',
@@ -123,6 +100,7 @@ const styles = StyleSheet.create({
     margin:'5%'
   },
   buttonView:{
+    margin:10,
     backgroundColor:'#4863df',
     borderWidth:2,
     borderColor:'#2B3590',
@@ -143,13 +121,7 @@ const styles = StyleSheet.create({
     padding:10,
     fontWeight:'600',
     color:'#000'
-  },
-  bottomContainer:{
-    position:'absolute',
-    height:60,
-    width:'100%',
-    bottom: 0,
-  },
+  }
   
 })
 

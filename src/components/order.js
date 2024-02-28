@@ -2,30 +2,19 @@
 import React,{useEffect,useState} from 'react';
 import {StyleSheet, ScrollView, View, Image, Text, Button, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faAngleLeft, faChair } from '@fortawesome/free-solid-svg-icons';
 import LinearGradient from 'react-native-linear-gradient';
 
 import globalstyles from '../globalcss/globalstyle';
 import { getDineinOptions } from '../actions/fnbactions';
-import { appBlackColor, appOrangeColor, appThemeColor, appblueColor, dininButtonBlue } from '../utils/ColorConstants';
+import { appBlackColor, appThemeColor, appblueColor } from '../utils/ColorConstants';
+import HeaderComponent from '../utils/headercomponent';
 
 const OrderScreen = ({ navigation }) => {
 
   const dispatch = useDispatch()
   const dineInDetails = useSelector((state) => state.fnbinfo);
   const [apiCallDone,setAPICallDone] = useState(false)
-  const userLoginInfo = useSelector((state) => state.userlogin);
-  const [userData,setUserData] = useState({})
   const [dineinOptions,setDineinOptions] = useState([])
-  useEffect(()=>{
-    if(userLoginInfo && userLoginInfo.loginResponse){
-        const {loginResponse} = userLoginInfo
-        const {success_value} = loginResponse
-        const {user_data} = success_value
-        setUserData(user_data)
-    }
-  },[userLoginInfo])
 
   useEffect(()=>{
     if(!apiCallDone){
@@ -54,13 +43,7 @@ const OrderScreen = ({ navigation }) => {
 
   return (
     <View style={globalstyles.containerView}>
-      <View style={styles.headerView}>
-        <TouchableOpacity onPress={goBack}>
-          <FontAwesomeIcon icon={faAngleLeft} size={30}/>
-        </TouchableOpacity>
-        <Image source={require('../../assets/logo_blue.jpg')} style={styles.headerIcon} resizeMode='contain'/>
-        <Text style={styles.headerText}>Tasty Foods Resturant</Text>
-      </View>
+      <HeaderComponent backAction={goBack} />
       <View style={styles.contentView}>
       <View style={styles.imageContainer}>
           <View style={styles.headingView}>
@@ -83,41 +66,21 @@ const OrderScreen = ({ navigation }) => {
           </View>
         </ScrollView>
       </View>
-      <View style={styles.bottomContainer} >
-        <Text style={styles.headerText}>User:  {userData && userData.name}</Text>
-      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  headerView:{
-    flex:0.10,
-    flexDirection:'row',
-    alignItems:'flex-start',
-    paddingTop:10,
-    width:'100%',
-  },
-  headerIcon:{
-    height:40,
-    width:80,
-  },
-  headerText:{
-    fontSize:17,
-    padding:10,
-    fontWeight:'600',
-    color:appblueColor
-  },
-  dineinOption:{
-    fontSize:30,
-    fontWeight:'600',
-    color:appThemeColor
-  },
   contentView:{
     flex:0.90,
     width:'100%',
     alignItems:'center',
     // justifyContent:'center'
+  },
+  dineinOption:{
+    fontSize:30,
+    fontWeight:'600',
+    color:appThemeColor
   },
   scrollView:{
     flex:1,
@@ -130,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
   imageContainer:{
-    marginTop:-40,
+    marginTop:-20,
     width: '100%',
     height: 300,
     overflow: 'hidden',
@@ -174,12 +137,6 @@ const styles = StyleSheet.create({
     padding:10,
     fontWeight:'600',
     color:appThemeColor
-  },
-  bottomContainer:{
-    position:'absolute',
-    height:60,
-    width:'100%',
-    bottom: 0,
   },
 })
 

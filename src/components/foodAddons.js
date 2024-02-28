@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 import { setCartValue } from '../actions/cartaction';
 import globalstyles from '../globalcss/globalstyle';
+import HeaderComponent from '../utils/headercomponent';
 const FoodAddOnScreen = ({ navigation }) => {
     const dispatch = useDispatch();
     const tableState = useSelector((state) => state.cartinfo);
@@ -58,13 +59,7 @@ const FoodAddOnScreen = ({ navigation }) => {
 
     return (
         <View style={globalstyles.containerView}>
-        <View style={styles.headerView}>
-            <TouchableOpacity onPress={goBack}>
-            <FontAwesomeIcon icon={faAngleLeft} size={30}/>
-            </TouchableOpacity>
-            <Image source={require('../../assets/logo_blue.jpg')} style={styles.headerIcon} resizeMode='contain'/>
-            <Text style={styles.headerText}>Tasty Foods Resturant</Text>
-        </View>
+        <HeaderComponent backAction={goBack} />
         <View style={styles.contentView}>
             <View style={{...styles.categoryViewRow,marginTop:-20}}>
                 <Text style={styles.subheaderText}>Coffee</Text>
@@ -90,31 +85,11 @@ const FoodAddOnScreen = ({ navigation }) => {
             ))}
             
         </View>
-        <View style={styles.bottomContainer} >
-            <Text style={styles.headerText}>User: ABCD</Text>
-        </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-  headerView:{
-    flex:0.10,
-    flexDirection:'row',
-    alignItems:'flex-start',
-    paddingTop:10,
-    width:'100%',
-  },
-  headerIcon:{
-    height:40,
-    width:80,
-  },
-  headerText:{
-    fontSize:17,
-    padding:10,
-    fontWeight:'600',
-    color:'#2B3590'
-  },
   contentView:{
     flex:0.90,
     width:'100%',
@@ -185,13 +160,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#f7f8f8',
     borderColor:'#e0e1e1',
     textAlign:'center'
-  },
-  bottomContainer:{
-    position:'absolute',
-    height:60,
-    width:'100%',
-    bottom: 0,
-  },
+  }
 })
 
 export default FoodAddOnScreen;
