@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import globalstyles from '../globalcss/globalstyle';
 import { getDineinOptions } from '../actions/fnbactions';
-import { appBlackColor, appThemeColor, appblueColor } from '../utils/ColorConstants';
+import { appBlackColor, bgGrayColor, appThemeColor, appblueColor } from '../utils/ColorConstants';
 import HeaderComponent from '../utils/headercomponent';
 
 const OrderScreen = ({ navigation }) => {
@@ -37,6 +37,8 @@ const OrderScreen = ({ navigation }) => {
 
   const colorsValue = [appblueColor,'#acc0fe']
 
+  const headerColorsValue = [appBlackColor,bgGrayColor]
+
   goToTables=()=>{
     navigation.navigate("Tables")
   }
@@ -46,9 +48,9 @@ const OrderScreen = ({ navigation }) => {
       <HeaderComponent backAction={goBack} />
       <View style={styles.contentView}>
       <View style={styles.imageContainer}>
-          <View style={styles.headingView}>
+          <LinearGradient style={styles.headingView} colors={headerColorsValue} end={ {x: 0.9, y: 0.9} }>
              <Text style={styles.dineinOption}>Pick your Dine-In option</Text>
-          </View>
+          </LinearGradient>
           <View style={styles.mask} />
         </View>
         <ScrollView style={styles.scrollView}>
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
   headingView:{
     width: '100%',
     height: '100%',
-    backgroundColor:appBlackColor,
+    backgroundColor:appblueColor,
     alignItems:'center',
     justifyContent:'center'
   },

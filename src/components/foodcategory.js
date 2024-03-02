@@ -8,10 +8,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import globalstyles from '../globalcss/globalstyle';
 import { getAllGroups } from '../actions/fnbactions';
 import HeaderComponent from '../utils/headercomponent';
+import { appOrangeColor,appblueColor } from '../utils/ColorConstants';
 
 const FoodCategoryScreen = ({ navigation }) => {
   const dispatch = useDispatch()
-  const colorsValue = ['#fbfeff', '#e1f8ff', '#c8f3ff']
+  // const colorsValue = ['#fbfeff', '#e1f8ff', '#c8f3ff']
+  const colorsValue = [appblueColor,'#acc0fe']
   const fnbinfo = useSelector((state) => state.fnbinfo);
   const [groups,setGroups] = useState([])
   gotToList=(group)=>{
@@ -101,10 +103,10 @@ const styles = StyleSheet.create({
   },
   buttonView:{
     margin:10,
-    backgroundColor:'#4863df',
+    borderRadius:75,
     borderWidth:2,
     borderColor:'#2B3590',
-    height:100,
+    height:150,
     width:150,
     alignItems:'center',
     justifyContent:'center'
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
     fontSize:17,
     padding:10,
     fontWeight:'600',
-    color:'#000'
+    color:'#fff'
   }
   
 })
